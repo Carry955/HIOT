@@ -1,11 +1,9 @@
 package com.zkl.hiot.ui.main.equipment;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,7 +21,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder> implements View.OnClickListener {
+public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder>
+        implements View.OnClickListener {
     private final Context mContext;
     private final ArrayList<HolderDeviceEntity> mData;
     private OnItemClickListener onItemClickListener;

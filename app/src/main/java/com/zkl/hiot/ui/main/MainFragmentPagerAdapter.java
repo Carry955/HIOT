@@ -1,6 +1,5 @@
 package com.zkl.hiot.ui.main;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -11,11 +10,9 @@ import com.zkl.hiot.ui.main.mine.MineFragment;
 import com.zkl.hiot.ui.main.scene.SceneFragment;
 
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
-
     public  MainFragmentPagerAdapter(FragmentManager fm){
         super(fm);
     }
-
     @Override
     public Fragment getItem(int i) {
         Fragment fragment = null;
@@ -35,7 +32,6 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
         }
         return fragment;
     }
-
     @Override
     public int getCount() {
         return 4;

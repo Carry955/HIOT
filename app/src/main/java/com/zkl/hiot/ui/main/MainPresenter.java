@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import com.zkl.hiot.base.BasePresenter;
 import com.zkl.hiot.entity.LoginEntity;
-import com.zkl.hiot.http.HttpResult;
 import com.zkl.hiot.http.HttpResultFunc;
 import com.zkl.hiot.http.HttpService;
 import com.zkl.hiot.http.ProgressDialogSubscriber;
@@ -14,9 +13,7 @@ import javax.inject.Inject;
 
 import rx.Observable;
 
-
 public class MainPresenter extends BasePresenter<MainView> {
-
     @Inject
     HttpService service;
     @Inject

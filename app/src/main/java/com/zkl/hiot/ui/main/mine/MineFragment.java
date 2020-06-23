@@ -34,11 +34,11 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     TextView tv_users_name;
     @BindView(R.id.tv_user_email)
     TextView tv_users_email;
+
     @Override
     protected MinePresenter createPresenter(){
         return minePresenter;
     }
-
     @OnClick(R.id.head_image)
     void headClick(){
         minePresenter.changeHead();
@@ -68,50 +68,42 @@ public class MineFragment extends BaseFragment<MineView, MinePresenter> implemen
     public Fragment getFragment(){
         return this;
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         minePresenter.getUserInfo();
     }
-
     @Override
     protected void injectDependencies(){
         ((BaseActivity)getActivity()).getActivityComponent().inject(this);
     }
 
     private Unbinder unbinder;
-
     @Override
     public View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
     }
-
     @Override
     public void showUserHead(String imgUrl) {
         Glide.with(this.getActivity())
                 .load(imgUrl)
                 .into(head_images);
     }
-
     @Override
     public void showUserName(String username) {
         tv_users_name.setText(username);
     }
-
     @Override
     public void showUserEmail(String email) {
         tv_users_email.setText(email);
     }
-
     @Override
     public void showToast(String msg) {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();

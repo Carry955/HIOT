@@ -9,15 +9,9 @@ import android.widget.Toast;
 
 import com.zkl.hiot.R;
 import com.zkl.hiot.base.BaseActivity;
-import com.zkl.hiot.http.HttpService;
 import com.zkl.hiot.view.NoSlideViewPager;
 
 import javax.inject.Inject;
-
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView {
     @Inject
@@ -34,7 +28,6 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
 //        mainPresenter = new MainPresenter();
         return mainPresenter;
     }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,12 +63,10 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
             }
         });
     }
-
     @Override
     public void showToast(String s) {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
-
     @Override
     protected void injectDependencies(){
         getActivityComponent().inject(this);

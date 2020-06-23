@@ -1,23 +1,15 @@
 package com.zkl.hiot.ui.main.mine;
 
-
 import android.Manifest;
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.os.FileUtils;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
@@ -61,9 +53,9 @@ public class MinePresenter extends BasePresenter<MineView> {
     Activity activity;
     @Inject
     public MinePresenter(){ }
-
     public void getUserInfo(){
-        Observable<HttpResult<UserEntity>> observable = service.getUserInfo(preferencesHelper.getTokenValue());
+        Observable<HttpResult<UserEntity>> observable =
+                service.getUserInfo(preferencesHelper.getTokenValue());
         toSubscribe(observable, new ProgressDialogSubscriber<HttpResult<UserEntity>>(activity) {
             @Override
             public void onNext(HttpResult<UserEntity> result) {
@@ -140,13 +132,11 @@ public class MinePresenter extends BasePresenter<MineView> {
         chooseDialog.show();
     }
     public static final int CHOOSE_PICTURE = 66;
-
     public static final int TAKE_PICTURE = 55;
     public static final int CROP_SMALL_PICTURE = 44;
     public void choseHeadImageFromGallery(){
         Intent openAlbumIntent = new Intent();
-        openAlbumIntent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-//        openAlbumIntent.setAction(Intent.ACTION_GET_CONTENT);
+        openAlbumIntent.setAction(Intent.ACTION_GET_CONTENT);
         openAlbumIntent.setType("image/*");
         getView().getFragment().startActivityForResult(openAlbumIntent, CHOOSE_PICTURE);
     }
@@ -168,64 +158,46 @@ public class MinePresenter extends BasePresenter<MineView> {
         openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
         getView().getFragment().startActivityForResult(openCameraIntent, TAKE_PICTURE);
     }
-    public void logout(){
-        Observable<HttpResult> observable = service.logout(preferencesHelper.getTokenValue());
-        toSubscribe(observable, new ProgressDialogSubscriber<HttpResult>(activity) {
-            @Override
-            public void onNext(HttpResult result) {
-                if(result != null){
-                    if (result.getStatus() == 1){
-                        getView().showToast(result.getMsg());
-                        getView().logoutSucceed();
-                        preferencesHelper.clear();
-                    }else{
-                        getView().showToast(result.getMsg());
-                    }
-                }else{
-                    getView().showToast("退出登录失败：result==null");
-                }
-            }
-        });
-    }
-    private String savePhoto(Bitmap photoBitmap, String path, String photoName) {
-        String localPath = null;
-        if (android.os.Environment.getExternalStorageState().equals(
-                android.os.Environment.MEDIA_MOUNTED)) {
-            File dir = new File(path);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-            File photoFile = new File(path, photoName + ".jpg");
-            FileOutputStream fileOutputStream = null;
-            try {
-                fileOutputStream = new FileOutputStream(photoFile);
-                if (photoBitmap != null) {
-                    if (photoBitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)) {
-                        localPath = photoFile.getPath();
-                        fileOutputStream.flush();
-                    }
-                }
-            } catch (FileNotFoundException e) {
-                photoFile.delete();
-                localPath = null;
-                e.printStackTrace();
-            } catch (IOException e) {
-                photoFile.delete();
-                localPath = null;
-                e.printStackTrace();
-            } finally {
-                try {
-                    if (fileOutputStream != null) {
-                        fileOutputStream.close();
-                        fileOutputStream = null;
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return localPath;
-    }
+
+//    private String savePhoto(Bitmap photoBitmap, String path, String photoName) {
+//        String localPath = null;
+//        if (android.os.Environment.getExternalStorageState().equals(
+//                android.os.Environment.MEDIA_MOUNTED)) {
+//            File dir = new File(path);
+//            if (!dir.exists()) {
+//                dir.mkdirs();
+//            }
+//            File photoFile = new File(path, photoName + ".jpg");
+//            FileOutputStream fileOutputStream = null;
+//            try {
+//                fileOutputStream = new FileOutputStream(photoFile);
+//                if (photoBitmap != null) {
+//                    if (photoBitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)) {
+//                        localPath = photoFile.getPath();
+//                        fileOutputStream.flush();
+//                    }
+//                }
+//            } catch (FileNotFoundException e) {
+//                photoFile.delete();
+//                localPath = null;
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                photoFile.delete();
+//                localPath = null;
+//                e.printStackTrace();
+//            } finally {
+//                try {
+//                    if (fileOutputStream != null) {
+//                        fileOutputStream.close();
+//                        fileOutputStream = null;
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        return localPath;
+//    }
     public boolean hasSdcard(){
         String state = Environment.getExternalStorageState();
         if(state.equals(Environment.MEDIA_MOUNTED)){
@@ -304,7 +276,8 @@ public class MinePresenter extends BasePresenter<MineView> {
     }
     private void uploadPic(final File file){
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        MultipartBody.Part multipartFile = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+        MultipartBody.Part multipartFile =
+                MultipartBody.Part.createFormData("file", file.getName(), requestFile);
         Observable<HttpResult> observable = service.uploadFile(multipartFile, preferencesHelper.getTokenValue());
         toSubscribe(observable, new ProgressDialogSubscriber<HttpResult>(activity) {
             @Override
@@ -324,6 +297,25 @@ public class MinePresenter extends BasePresenter<MineView> {
                 }
                 if(file.exists()&&file.isFile()){
                     file.delete();
+                }
+            }
+        });
+    }
+    public void logout(){
+        Observable<HttpResult> observable = service.logout(preferencesHelper.getTokenValue());
+        toSubscribe(observable, new ProgressDialogSubscriber<HttpResult>(activity) {
+            @Override
+            public void onNext(HttpResult result) {
+                if(result != null){
+                    if (result.getStatus() == 1){
+                        getView().showToast(result.getMsg());
+                        getView().logoutSucceed();
+                        preferencesHelper.clear();
+                    }else{
+                        getView().showToast(result.getMsg());
+                    }
+                }else{
+                    getView().showToast("退出登录失败：result==null");
                 }
             }
         });

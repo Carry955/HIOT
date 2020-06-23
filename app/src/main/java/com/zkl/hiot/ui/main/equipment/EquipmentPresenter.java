@@ -1,11 +1,7 @@
 package com.zkl.hiot.ui.main.equipment;
 
-import android.Manifest;
 import android.app.Activity;
 
-import com.mylhyl.acp.Acp;
-import com.mylhyl.acp.AcpListener;
-import com.mylhyl.acp.AcpOptions;
 import com.zkl.hiot.base.BasePresenter;
 import com.zkl.hiot.entity.HolderDeviceEntity;
 import com.zkl.hiot.http.HttpResult;
@@ -19,8 +15,6 @@ import javax.inject.Inject;
 
 import rx.Observable;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
-
 public class EquipmentPresenter extends BasePresenter<EquipmentView> {
 
     @Inject
@@ -29,13 +23,14 @@ public class EquipmentPresenter extends BasePresenter<EquipmentView> {
     Activity activity;
     @Inject
     UserPreferencesHelper preferencesHelper;
-
     @Inject
     public EquipmentPresenter(){
     }
     public void getDeviceList(){
-        Observable<HttpResult<List<HolderDeviceEntity>>> observable = service.getDeviceList(1, preferencesHelper.getTokenValue());
-        toSubscribe(observable, new ProgressDialogSubscriber<HttpResult<List<HolderDeviceEntity>>>(activity) {
+        Observable<HttpResult<List<HolderDeviceEntity>>> observable =
+                service.getDeviceList(1, preferencesHelper.getTokenValue());
+        toSubscribe(observable,
+                new ProgressDialogSubscriber<HttpResult<List<HolderDeviceEntity>>>(activity) {
             @Override
             public void onNext(HttpResult<List<HolderDeviceEntity>> result) {
                 getView().stopRefresh();

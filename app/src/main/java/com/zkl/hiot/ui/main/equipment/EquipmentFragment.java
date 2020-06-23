@@ -1,6 +1,5 @@
 package com.zkl.hiot.ui.main.equipment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +27,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EquipmentFragment extends BaseFragment<EquipmentView, EquipmentPresenter> implements EquipmentView, DeviceAdapter.OnItemClickListener {
+public class EquipmentFragment extends BaseFragment<EquipmentView, EquipmentPresenter>
+        implements EquipmentView, DeviceAdapter.OnItemClickListener {
 
     @BindView(R.id.srl_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -36,7 +36,6 @@ public class EquipmentFragment extends BaseFragment<EquipmentView, EquipmentPres
     RecyclerView recyclerView;
     @BindView(R.id.tv_nodata)
     TextView tv_nodata;
-
     @Inject
     EquipmentPresenter equipmentPresenter;
     @Override
@@ -60,12 +59,6 @@ public class EquipmentFragment extends BaseFragment<EquipmentView, EquipmentPres
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        equipmentPresenter.getDeviceList();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         equipmentPresenter.getDeviceList();
     }
 
